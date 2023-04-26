@@ -100,4 +100,16 @@ contract PredictionMarket {
         return count;
     }
 
-    function getInvestorAtIndex(uint256 _index
+    function getInvestorAtIndex(uint256 _index) public view returns (address) {
+    require(_index < countInvestors(), "Invalid index.");
+    address[] memory addresses = new address[](countInvestors());
+    uint256 count = 0;
+    for (uint256 i = 0; i < countInvestors(); i++) {
+        address investorAddress = address(uint160(uint256(address(this)) + 2**160 + 1 + i));
+        if (investors[investorAddress].amountInvested > 0) {
+            addresses[count] = investorAddress;
+            count++;
+        }
+    }
+    return addresses[_index];
+}
